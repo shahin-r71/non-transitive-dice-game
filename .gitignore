@@ -1,0 +1,35 @@
+# Node modules directory
+node_modules/
+
+# Debug logs and npm log files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory for code coverage tools like Istanbul or NYC
+coverage/
+.nyc_output/
+
+# Build output directories
+build/
+dist/
+
+# Environment files
+.env
+.env.*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE and Editor directories
+.vscode/
+.idea/ 
