@@ -5,6 +5,6 @@ const diceconfigs = diceParser.parseDiceConfigs();
 
 const dice= diceconfigs.map(d=>Dice.toNumber(d));
 
-console.log(dice)
+console.log(dice[0].faces);
 // console.log(diceconfigs[1]);
 

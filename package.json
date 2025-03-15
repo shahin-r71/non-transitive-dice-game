@@ -1,13 +1,13 @@
 {
-  "name": "non-transitive-dice-game",
-  "version": "1.0.0",
-  "description": "A non-transitive dice game with provable fair random generation",
-  "main": "src/index.js",
-  "type": "module",
-  "scripts": {
-    "start": "node src/index.js"
-  },
-  "dependencies": {
-    "console-table-printer": "^2.11.0"
-  }
+    "name": "non-transitive-dice-game",
+    "version": "1.0.0",
+    "description": "A non-transitive dice game with provable fair random generation",
+    "main": "src/index.js",
+    "type": "module",
+    "scripts": {
+      "start": "node src/index.js"
+    },
+    "dependencies": {
+      "console-table-printer": "^2.11.0"
+    }
 } 
