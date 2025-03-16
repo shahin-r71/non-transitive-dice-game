@@ -4,7 +4,15 @@ export class Dice {
         this.faces = faces;
         // console.log(this.faces);
     }
-
+    toString() {
+        return this.faces.join(',');
+    }
+    getFaceValue(index) {
+        return this.faces[index];
+    }
+    getFaceCount() {
+        return this.faces.length;
+    }
     static toNumber(diceString) {
         const faces = diceString.split(',').map(face =>{
         const value = Number(face.trim());
