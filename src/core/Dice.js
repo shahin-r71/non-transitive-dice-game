@@ -2,7 +2,6 @@ export class Dice {
     constructor(faces) {
         if(!Array.isArray(faces) || faces.length !==6)  throw new Error('Invalid dice configuration, must be an array of arrays each containing 6 faces');
         this.faces = faces;
-        // console.log(this.faces);
     }
     toString() {
         return this.faces.join(',');

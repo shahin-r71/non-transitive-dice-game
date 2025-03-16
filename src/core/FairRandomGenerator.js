@@ -7,11 +7,9 @@ export class FairRandomGenerator {
     }
     generateKey(){
         this.key = crypto.randomBytes(32);
-        // return this.key;
     }
     generateComputerNumber(maxValue){
         this.computerNumber = crypto.randomInt(0,maxValue+1);
-        // return this.computerNumber;
     }
     generateHmac(){
         if (!this.key || this.computerNumber === null) throw new Error('Key and computer number must be set before calculating HMAC');
@@ -26,5 +24,5 @@ export class FairRandomGenerator {
     }
     getKey(){
         return this.key;
-        }
+    }
 }

@@ -35,7 +35,8 @@ export class GameController{
             return this.determineFirstPlayer();
         }
         if (userInput === 'X') {
-            throw new Error('Game cancelled by user');
+            console.error('Game cancelled by user');
+            process.exit(1);
         }
         const userNumber = parseInt(userInput);
         if(isNaN(userNumber) || userNumber < 0 || userNumber > 1){
@@ -60,7 +61,8 @@ export class GameController{
 
             const userInput = readline.question("Your selection: ");
             if (userInput === 'X') {
-                throw new Error('Game cancelled by user');
+                console.error('Game cancelled by user');
+                process.exit(1);
             }
             if (userInput === '?') {
                 const probabilityMatrix = ProbabilityCalculator.calculateProbabilityMatrix(this.diceList);
@@ -82,7 +84,8 @@ export class GameController{
             
             const userInput = readline.question("Your selection: ");
             if (userInput === 'X') {
-                throw new Error('Game cancelled by user');
+                console.error('Game cancelled by user');
+                process.exit(1);
             }
             if (userInput === '?') {
                 const probabilityMatrix = ProbabilityCalculator.calculateProbabilityMatrix(this.diceList);
@@ -121,12 +124,14 @@ export class GameController{
             return this.makeThrow(dice, isComputer);
         }
         if (userInput === 'X') {
-            throw new Error('Game cancelled by user');
+            console.error('Game cancelled by user');
+            process.exit(1);
         }
 
         const userNumber = parseInt(userInput);
         if (isNaN(userNumber) || userNumber < 0 || userNumber >= 6) {
-            throw new Error(`Invalid input. Please select a number between 0 and 5.`);
+            console.log(`Invalid input. Please select a number between 0 and 5.`);
+            return this.makeThrow(dice, isComputer);
         }
         const sum = this.randomGenerator.getComputerNumber() + userNumber;
         const resultIndex = sum % 6;
