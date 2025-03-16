@@ -3,10 +3,7 @@ export class TableGenerator {
     static generateProbabilityTable(probabilityMatrix) {
         console.log('\nProbability of the win for the user:');
         printTable(probabilityMatrix.matrix, {
-            columns: probabilityMatrix.headers,
-            colorMap: {
-                header: 'cyan'
-            }
+            columns: probabilityMatrix.headers
         });
     }
     static generateDiceSelectionMenu(diceList, availableIndices) {
@@ -25,10 +22,7 @@ export class TableGenerator {
         );
 
         printTable(options, {
-            columns: ['option', 'description'],
-            colorMap: {
-                header: 'cyan'
-            }
+            columns: ['option', 'description']
         });
     }
 
@@ -46,10 +40,7 @@ export class TableGenerator {
         );
 
         printTable(options, {
-            columns: ['option', 'description'],
-            colorMap: {
-                header: 'cyan'
-            }
+            columns: ['option', 'description']
         });
     }
 }

@@ -21,7 +21,7 @@ export class ProbabilityCalculator {
                 'User dice v': diceList[i].toString()
             };
             for (let j = 0; j < diceList.length; j++) {
-                if (i === j) row[headers[i]] = "-0.3333";
+                if (i === j || headers[i] === headers[j]) row[headers[i]] = "-0.3333";
                 else {
                     row[headers[j]] = this.calculateWinningProbability(diceList[i], diceList[j]).toFixed(4);
                 }

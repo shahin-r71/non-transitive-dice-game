@@ -15,6 +15,17 @@ This project implements a dice game based on non-transitive dice. In a non-trans
 5. The game implements a provably fair random mechanism using cryptographic HMAC verification.
 6. Players can view the win probability matrix to make strategic decisions.
 
+## 🎬 Demo
+
+
+<div align="center">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/eWZ0XdeUHSg" 
+            title="YouTube video player" frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+    </iframe>
+</div>
+
 ## 🔧 Installation
 
 ```bash
@@ -57,6 +68,3 @@ During the game:
 ## 🔒 Security
 
 The game uses SHA3-256 HMAC for cryptographic verification, ensuring that random outcomes cannot be manipulated.
-
-<!-- ## 🎬 Demo -->
-<!-- [Placeholder for YouTube Video Demo] -->

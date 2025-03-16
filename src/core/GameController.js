@@ -71,7 +71,7 @@ export class GameController{
             }
             this.userDiceIndex = parseInt(userInput);
             if (isNaN(this.userDiceIndex) || !availableIndices.includes(this.userDiceIndex)) {
-                console.error('Invalid selection. Please remember to choose from available dices next time .');
+                console.error('Invalid selection. Please remember to choose from available dice next time .');
                 return this.setDice(computerGoesFirst);
             }
             
@@ -95,7 +95,7 @@ export class GameController{
             
             this.userDiceIndex = parseInt(userInput);
             if (isNaN(this.userDiceIndex) || !availableIndices.includes(this.userDiceIndex)) {
-                console.error('Invalid selection. Please remember to choose from available dices next time.');
+                console.error('Invalid selection. Please remember to choose from available dice next time.');
                 return this.setDice(computerGoesFirst);
             }
             console.log(`You make the first move and choose the [${this.diceList[this.userDiceIndex].toString()}] dice.`);
