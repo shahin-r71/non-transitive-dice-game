@@ -12,7 +12,10 @@ export class FairRandomGenerator {
         this.computerNumber = crypto.randomInt(0,maxValue+1);
     }
     generateHmac(){
-        if (!this.key || this.computerNumber === null) throw new Error('Key and computer number must be set before calculating HMAC');
+        if (!this.key || this.computerNumber === null) {
+            console.error('Key and computer number must be set before calculating HMAC');
+            process.exit(1);
+        }
         this.hmac = crypto.createHmac('sha3-256', this.key).update(this.computerNumber.toString()).digest('hex');
         return this.hmac;
     }

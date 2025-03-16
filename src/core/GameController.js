@@ -40,7 +40,7 @@ export class GameController{
         }
         const userNumber = parseInt(userInput);
         if(isNaN(userNumber) || userNumber < 0 || userNumber > 1){
-            console.log('Invalid input. Please select 0 or 1.');
+            console.error('Invalid input. Please remember to select 0 or 1 next time.');
             return this.determineFirstPlayer();
             
         }
@@ -71,7 +71,7 @@ export class GameController{
             }
             this.userDiceIndex = parseInt(userInput);
             if (isNaN(this.userDiceIndex) || !availableIndices.includes(this.userDiceIndex)) {
-                console.log('Invalid selection. Please choose from available dices.');
+                console.error('Invalid selection. Please remember to choose from available dices next time .');
                 return this.setDice(computerGoesFirst);
             }
             
@@ -95,7 +95,7 @@ export class GameController{
             
             this.userDiceIndex = parseInt(userInput);
             if (isNaN(this.userDiceIndex) || !availableIndices.includes(this.userDiceIndex)) {
-                console.log('Invalid selection. Please choose from available dices.');
+                console.error('Invalid selection. Please remember to choose from available dices next time.');
                 return this.setDice(computerGoesFirst);
             }
             console.log(`You make the first move and choose the [${this.diceList[this.userDiceIndex].toString()}] dice.`);
@@ -130,7 +130,7 @@ export class GameController{
 
         const userNumber = parseInt(userInput);
         if (isNaN(userNumber) || userNumber < 0 || userNumber >= 6) {
-            console.log(`Invalid input. Please select a number between 0 and 5.`);
+            console.error(`Invalid input. Please remember to select a number between 0 and 5 next time.`);
             return this.makeThrow(dice, isComputer);
         }
         const sum = this.randomGenerator.getComputerNumber() + userNumber;
