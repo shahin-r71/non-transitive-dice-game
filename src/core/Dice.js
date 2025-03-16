@@ -10,9 +10,6 @@ export class Dice {
     getFaceValue(index) {
         return this.faces[index];
     }
-    getFaceCount() {
-        return this.faces.length;
-    }
     static toNumber(diceString) {
         const faces = diceString.split(',').map(face =>{
         const value = Number(face.trim());

@@ -5,9 +5,10 @@
     "main": "src/index.js",
     "type": "module",
     "scripts": {
-      "start": "node src/index.js"
+        "start": "node src/index.js"
     },
     "dependencies": {
-      "console-table-printer": "^2.11.0"
+        "console-table-printer": "^2.11.0",
+        "readline-sync": "^1.4.10"
     }
-} 
+}
