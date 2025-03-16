@@ -1,3 +1,4 @@
+import { printTable } from 'console-table-printer';
 export class TableGenerator {
     static generateProbabilityTable(probabilityMatrix) {
         console.log('\nProbability of the win for the user:');

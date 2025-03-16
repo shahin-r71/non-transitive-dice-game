@@ -8,7 +8,6 @@ export class GameController{
         this.computerDiceIndex = null;
         this.userDiceIndex = null;
         this.randomGenerator = new FairRandomGenerator();
-        console.log(this.diceList[0].toString());
         this.readLine = readline.createInterface({
         input: process.stdin,
         output: process.stdout
