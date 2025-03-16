@@ -1,5 +1,7 @@
 import { FairRandomGenerator } from './FairRandomGenerator.js';
 import readline from 'node:readline';
+import { TableGenerator } from '../ui/TableGenerator.js';
+import { ProbabilityCalculator } from './ProbabilityCalculator.js';
 export class GameController{
     constructor(diceList) {
         this.diceList = diceList;
@@ -31,24 +33,25 @@ export class GameController{
     }
 
     async determineFirstPlayer(){
-        
         this.randomGenerator.generateComputerNumber(1);
         this.randomGenerator.generateKey();
         this.randomGenerator.generateHmac();
         const hmac = this.randomGenerator.getHmac();
         console.log(`I selected a random value in the range 0..1 (HMAC=${hmac}).`);
         console.log('Try to guess my selection.');
-        // TODO: generate ta table with options 0 and 1
+        
+        TableGenerator.generateNumberSelectionMenu(1);
 
         const answer = await this.getInput();
         if (answer === '?') {
-            // ToDo: calcualte winnning probability and show in table
+            const probabilityMatrix = ProbabilityCalculator.calculateProbabilityMatrix(this.diceList);
+            TableGenerator.generateProbabilityTable(probabilityMatrix);
+            return this.determineFirstPlayer();
         }
         if (answer === 'X') {
             throw new Error('Game cancelled by user');
         }
         const userNumber = parseInt(answer);
-        // console.log("userNumber",userNumber);
         if(isNaN(userNumber) || userNumber < 0 || userNumber > 1){
             console.log('Invalid input. Please select 0 or 1.');
             return this.determineFirstPlayer();
@@ -66,7 +69,6 @@ export class GameController{
     }
     
     async setDice(computerGoesFirst) {
-        
         if (computerGoesFirst) {
             this.computerDiceIndex = Math.floor(Math.random() * this.diceList.length);
             console.log(`I make the first move and choose the [${this.diceList[this.computerDiceIndex].toString()}] dice.`);
@@ -105,17 +107,17 @@ export class GameController{
         console.log(`I selected a random value in the range 0..${5} (HMAC=${hmac}).`);
         console.log(`Add your number modulo ${6}.`);
 
-        // TableGenerator.generateNumberSelectionMenu(5);
+        TableGenerator.generateNumberSelectionMenu(5);
 
         const answer = await this.getInput();
-        // if (answer === '?') {
-        //     const probabilityMatrix = ProbabilityCalculator.calculateProbabilityMatrix(this.diceList);
-        //     TableGenerator.generateProbabilityTable(probabilityMatrix);
-        //     return this.makeThrow(dice, isComputer);
-        // }
-        // if (answer === 'X') {
-        //     throw new Error('Game cancelled by user');
-        // }
+        if (answer === '?') {
+            const probabilityMatrix = ProbabilityCalculator.calculateProbabilityMatrix(this.diceList);
+            TableGenerator.generateProbabilityTable(probabilityMatrix);
+            return this.makeThrow(dice, isComputer);
+        }
+        if (answer === 'X') {
+            throw new Error('Game cancelled by user');
+        }
 
         const userNumber = parseInt(answer);
         if (isNaN(userNumber) || userNumber < 0 || userNumber >= 6) {
