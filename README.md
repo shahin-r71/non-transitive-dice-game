@@ -17,14 +17,15 @@ This project implements a dice game based on non-transitive dice. In a non-trans
 
 ## 🎬 Demo
 
-
+<!-- markdownlint-disable MD033 -->
 <div align="center">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/eWZ0XdeUHSg" 
-            title="YouTube video player" frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/eWZ0XdeUHSg"
+            title="YouTube video player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen>
     </iframe>
 </div>
+<!-- markdownlint-enable MD033 -->
 
 ## 🔧 Installation
 

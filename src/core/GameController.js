@@ -23,29 +23,28 @@ export class GameController{
         this.randomGenerator.generateKey();
         this.randomGenerator.generateHmac();
         const hmac = this.randomGenerator.getHmac();
-        console.log(`I selected a random value in the range 0..1 (HMAC=${hmac}).`);
-
-        console.log('Try to guess my selection.');
-        TableGenerator.generateNumberSelectionMenu(1);
-
-        const userInput = readline.question("Your selection: ");
-        if (userInput === '?') {
-            const probabilityMatrix = ProbabilityCalculator.calculateProbabilityMatrix(this.diceList);
-            TableGenerator.generateProbabilityTable(probabilityMatrix);
-            return this.determineFirstPlayer();
-        }
-        if (userInput === 'X') {
-            console.error('Game cancelled by user');
-            process.exit(1);
-        }
-        const userNumber = parseInt(userInput);
-        if(isNaN(userNumber) || userNumber < 0 || userNumber > 1){
-            console.error('Invalid input. Please remember to select 0 or 1 next time.');
-            return this.determineFirstPlayer();
-            
-        }
-
         const computerNumber = this.randomGenerator.getComputerNumber();
+        
+        let userNumber;
+        while (true) {
+            console.log(`I selected a random value in the range 0..1 (HMAC=${hmac}).`);
+            console.log('Try to guess my selection.');
+            TableGenerator.generateNumberSelectionMenu(1);
+    
+            const userInput = readline.question("Your selection: ");
+            if (userInput === '?') {
+                const probabilityMatrix = ProbabilityCalculator.calculateProbabilityMatrix(this.diceList);
+                TableGenerator.generateProbabilityTable(probabilityMatrix);
+                continue;
+            }
+            if (userInput === 'X') {
+                console.error('Game cancelled by user');
+                process.exit(1);
+            }
+            userNumber = parseInt(userInput);
+            if (!isNaN(userNumber) && (userNumber === 0 || userNumber === 1)) break;
+            console.error('Invalid input. Please remember to select 0 or 1 next time.');
+        }
         console.log(`My selection: ${computerNumber} (KEY=${this.randomGenerator.getKey().toString('hex')}).`);
         return userNumber === computerNumber? 0: 1;
     }
