@@ -52,53 +52,57 @@ export class GameController{
     setDice(computerGoesFirst) {
         if (computerGoesFirst) {
             this.computerDiceIndex = Math.floor(Math.random() * this.diceList.length);
-            console.log(`I make the first move and I choose the [${this.diceList[this.computerDiceIndex].toString()}] dice.`);
-            
-            console.log("choose your dice");
             const availableIndices = this.diceList.map((_, index) => index).filter(index => index !== this.computerDiceIndex);
-            TableGenerator.generateDiceSelectionMenu(this.diceList, availableIndices);
+            console.log(`I make the first move and I choose the [${this.diceList[this.computerDiceIndex].toString()}] dice.`);
 
-            const userInput = readline.question("Your selection: ");
-            if (userInput === 'X') {
-                console.error('Game cancelled by user');
-                process.exit(1);
+            while (true) {
+                console.log("choose your dice");
+                TableGenerator.generateDiceSelectionMenu(this.diceList, availableIndices);
+
+                const userInput = readline.question("Your selection: ");
+                if (userInput === 'X') {
+                    console.error('Game cancelled by user');
+                    process.exit(1);
+                }
+                if (userInput === '?') {
+                    const probabilityMatrix = ProbabilityCalculator.calculateProbabilityMatrix(this.diceList);
+                    TableGenerator.generateProbabilityTable(probabilityMatrix);
+                    continue;
+                }
+                this.userDiceIndex = parseInt(userInput);
+                if (isNaN(this.userDiceIndex) || !availableIndices.includes(this.userDiceIndex)) {
+                    console.error('Invalid selection. Please remember to choose from available dice next time .');
+                    continue;
+                }
+                console.log(`You choose the [${this.diceList[this.userDiceIndex].toString()}] dice.`);
+                break;
             }
-            if (userInput === '?') {
-                const probabilityMatrix = ProbabilityCalculator.calculateProbabilityMatrix(this.diceList);
-                TableGenerator.generateProbabilityTable(probabilityMatrix);
-                return this.setDice(computerGoesFirst);
-            }
-            this.userDiceIndex = parseInt(userInput);
-            if (isNaN(this.userDiceIndex) || !availableIndices.includes(this.userDiceIndex)) {
-                console.error('Invalid selection. Please remember to choose from available dice next time .');
-                return this.setDice(computerGoesFirst);
-            }
-            
-            console.log(`You choose the [${this.diceList[this.userDiceIndex].toString()}] dice.`);
         }
         else {
-            console.log("choose your dice");   
             const availableIndices = this.diceList.map((_, index) => index);
-            TableGenerator.generateDiceSelectionMenu(this.diceList, availableIndices);
-            
-            const userInput = readline.question("Your selection: ");
-            if (userInput === 'X') {
-                console.error('Game cancelled by user');
-                process.exit(1);
+            while (true) {
+                console.log("choose your dice");
+                TableGenerator.generateDiceSelectionMenu(this.diceList, availableIndices);
+                
+                const userInput = readline.question("Your selection: ");
+                if (userInput === 'X') {
+                    console.error('Game cancelled by user');
+                    process.exit(1);
+                }
+                if (userInput === '?') {
+                    const probabilityMatrix = ProbabilityCalculator.calculateProbabilityMatrix(this.diceList);
+                    TableGenerator.generateProbabilityTable(probabilityMatrix);
+                    continue;
+                }
+                
+                this.userDiceIndex = parseInt(userInput);
+                if (isNaN(this.userDiceIndex) || !availableIndices.includes(this.userDiceIndex)) {
+                    console.error('Invalid selection. Please remember to choose from available dice next time.');
+                    continue;
+                }
+                console.log(`You make the first move and choose the [${this.diceList[this.userDiceIndex].toString()}] dice.`);
+                break;
             }
-            if (userInput === '?') {
-                const probabilityMatrix = ProbabilityCalculator.calculateProbabilityMatrix(this.diceList);
-                TableGenerator.generateProbabilityTable(probabilityMatrix);
-                return this.setDice(computerGoesFirst);
-            }
-            
-            this.userDiceIndex = parseInt(userInput);
-            if (isNaN(this.userDiceIndex) || !availableIndices.includes(this.userDiceIndex)) {
-                console.error('Invalid selection. Please remember to choose from available dice next time.');
-                return this.setDice(computerGoesFirst);
-            }
-            console.log(`You make the first move and choose the [${this.diceList[this.userDiceIndex].toString()}] dice.`);
-            
             const remainingIndices = availableIndices.filter(index => index !== this.userDiceIndex);
             this.computerDiceIndex = remainingIndices[Math.floor(Math.random() * remainingIndices.length)];
             console.log(`I choose the [${this.diceList[this.computerDiceIndex].toString()}] dice.`);
