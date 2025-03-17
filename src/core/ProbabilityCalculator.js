@@ -1,4 +1,5 @@
 export class ProbabilityCalculator {
+    // Calculates the winning probability of dice1 against dice2
     static calculateWinningProbability(dice1, dice2) {
         let totalWin = 0;
         const totalGames = 36;
@@ -12,6 +13,7 @@ export class ProbabilityCalculator {
         return totalWin / totalGames;
     }
 
+    // Calculates the probability matrix for a list of dice
     static calculateProbabilityMatrix(diceList) {
         const headers = diceList.map(dice => dice.toString());
 
