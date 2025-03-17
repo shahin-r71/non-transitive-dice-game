@@ -2,6 +2,7 @@ import { FairRandomGenerator } from './FairRandomGenerator.js';
 import readline from 'readline-sync';
 import { TableGenerator } from '../ui/TableGenerator.js';
 import { ProbabilityCalculator } from './ProbabilityCalculator.js';
+import { GameErrorHandler } from '../errors/GameErrorHandler.js';
 
 /**
  * GameController class manages the non-transitive dice game flow
@@ -15,13 +16,14 @@ export class GameController{
         this.userDiceIndex = null;
         this.randomGenerator = new FairRandomGenerator();
     }
+    
     play() {   
         // Main game flow - determine first player, set dice, make throws, determine winner
         console.log("Let's determine who makes the first move.");
-        const computerGoesFirst =  this.determineFirstPlayer();
+        const computerGoesFirst = this.determineFirstPlayer();
         this.setDice(computerGoesFirst);
-        const computerThrow =  this.makeThrow(this.diceList[this.computerDiceIndex], true);
-        const userThrow =  this.makeThrow(this.diceList[this.userDiceIndex], false);
+        const computerThrow = this.makeThrow(this.diceList[this.computerDiceIndex], true);
+        const userThrow = this.makeThrow(this.diceList[this.userDiceIndex], false);
         this.determineWinner(computerThrow, userThrow);
     }
 
@@ -33,7 +35,6 @@ export class GameController{
         const hmac = this.randomGenerator.getHmac();
         const computerNumber = this.randomGenerator.getComputerNumber();
         
-        // Get user's guess for the random number
         let userNumber;
         while (true) {
             console.log(`I selected a random value in the range 0..1 (HMAC=${hmac}).`);
@@ -41,23 +42,26 @@ export class GameController{
             TableGenerator.generateNumberSelectionMenu(1);
     
             const userInput = readline.question("Your selection: ");
+            
             if (userInput === '?') {
                 // Show probability matrix if help requested
                 const probabilityMatrix = ProbabilityCalculator.calculateProbabilityMatrix(this.diceList);
                 TableGenerator.generateProbabilityTable(probabilityMatrix);
                 continue;
             }
+            
             if (userInput === 'X' || userInput === 'x') {
-                // Exit game if requested
-                console.error('Game cancelled by user');
-                process.exit(1);
+                GameErrorHandler.handleGameCancelled();
             }
+            
             userNumber = parseInt(userInput);
             if (!isNaN(userNumber) && (userNumber === 0 || userNumber === 1)) break;
-            console.error('Invalid input. Please remember to select 0 or 1 next time.');
+        
+            GameErrorHandler.handleInputError('Please select 0 or 1');
         }
+        
         console.log(`My selection: ${computerNumber} (KEY=${this.randomGenerator.getKey().toString('hex')}).`);
-        return userNumber === computerNumber? 0: 1;
+        return userNumber === computerNumber ? 0 : 1;
     }
     
     setDice(computerGoesFirst) {
@@ -73,20 +77,23 @@ export class GameController{
                 TableGenerator.generateDiceSelectionMenu(this.diceList, availableIndices);
 
                 const userInput = readline.question("Your selection: ");
+                
                 if (userInput === 'X' || userInput === 'x') {
-                    console.error('Game cancelled by user');
-                    process.exit(1);
+                    GameErrorHandler.handleGameCancelled();
                 }
+                
                 if (userInput === '?') {
                     const probabilityMatrix = ProbabilityCalculator.calculateProbabilityMatrix(this.diceList);
                     TableGenerator.generateProbabilityTable(probabilityMatrix);
                     continue;
                 }
+                
                 this.userDiceIndex = parseInt(userInput);
                 if (isNaN(this.userDiceIndex) || !availableIndices.includes(this.userDiceIndex)) {
-                    console.error('Invalid selection. Please remember to choose from available dice next time .');
+                    GameErrorHandler.handleInputError('Please choose from available dice');
                     continue;
                 }
+                
                 console.log(`You choose the [${this.diceList[this.userDiceIndex].toString()}] dice.`);
                 break;
             }
@@ -99,10 +106,11 @@ export class GameController{
                 TableGenerator.generateDiceSelectionMenu(this.diceList, availableIndices);
                 
                 const userInput = readline.question("Your selection: ");
+                
                 if (userInput === 'X' || userInput === 'x') {
-                    console.error('Game cancelled by user');
-                    process.exit(1);
+                    GameErrorHandler.handleGameCancelled();
                 }
+                
                 if (userInput === '?') {
                     const probabilityMatrix = ProbabilityCalculator.calculateProbabilityMatrix(this.diceList);
                     TableGenerator.generateProbabilityTable(probabilityMatrix);
@@ -111,9 +119,10 @@ export class GameController{
                 
                 this.userDiceIndex = parseInt(userInput);
                 if (isNaN(this.userDiceIndex) || !availableIndices.includes(this.userDiceIndex)) {
-                    console.error('Invalid selection. Please remember to choose from available dice next time.');
+                    GameErrorHandler.handleInputError('Please choose from available dice');
                     continue;
                 }
+                
                 console.log(`You make the first move and choose the [${this.diceList[this.userDiceIndex].toString()}] dice.`);
                 break;
             }
@@ -123,7 +132,8 @@ export class GameController{
             console.log(`I choose the [${this.diceList[this.computerDiceIndex].toString()}] dice.`);
         }
     }
-     makeThrow(dice, isComputer) {
+    
+    makeThrow(dice, isComputer) {
         // Generate random number and HMAC for dice throw
         this.randomGenerator.generateKey();
         this.randomGenerator.generateComputerNumber(5);
@@ -133,29 +143,31 @@ export class GameController{
          
         // Get user's input for the throw
         let userNumber;
-         while (true) {
+        while (true) {
             console.log(`I selected a random value in the range 0..5 (HMAC=${hmac}).`);
             console.log(`Add your number modulo ${6}.`);
             TableGenerator.generateNumberSelectionMenu(5);
     
             const userInput = readline.question("Your selection: ");
+            
+            if (userInput === 'X' || userInput === 'x') {
+                GameErrorHandler.handleGameCancelled();
+            }
+            
             if (userInput === '?') {
                 const probabilityMatrix = ProbabilityCalculator.calculateProbabilityMatrix(this.diceList);
                 TableGenerator.generateProbabilityTable(probabilityMatrix);
                 continue;
             }
-            if (userInput === 'X' || userInput === 'x') {
-                console.error('Game cancelled by user');
-                process.exit(1);
-            }
     
             userNumber = parseInt(userInput);
-            if (isNaN(userNumber) || userNumber < 0 || userNumber >= 6) {
-                console.error(`Invalid input. Please remember to select a number between 0 and 5 next time.`);
+            if (isNaN(userNumber) || userNumber < 0 || userNumber > 5) {
+                GameErrorHandler.handleInputError('Please select a number between 0 and 5');
                 continue;   
             }
             break;
         }
+        
         // Calculate result and get dice face value
         const sum = this.randomGenerator.getComputerNumber() + userNumber;
         const resultIndex = sum % 6;
@@ -166,6 +178,7 @@ export class GameController{
         console.log(`${isComputer ? 'My' : 'Your'} throw is ${throwValue}.`);
         return throwValue;
     }
+    
     determineWinner(computerThrow, userThrow) {
         // Compare throw values and announce winner
         if (computerThrow > userThrow) {
@@ -176,5 +189,4 @@ export class GameController{
             console.log(`It's a tie (${computerThrow} = ${userThrow})!`);
         }
     }
-    
 }

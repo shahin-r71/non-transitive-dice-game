@@ -1,4 +1,5 @@
 import crypto from 'node:crypto';
+import { GameErrorHandler } from '../errors/GameErrorHandler.js';
 
 // Handles cryptographic operations for fair random number generation
 export class FairRandomGenerator {
@@ -21,8 +22,7 @@ export class FairRandomGenerator {
     // Creates HMAC using key and computer number
     generateHmac(){
         if (!this.key || this.computerNumber === null) {
-            console.error('Key and computer number must be set before calculating HMAC');
-            process.exit(1);
+            GameErrorHandler.handleCriticalError('Key and computer number must be set before calculating HMAC');
         }
         this.hmac = crypto.createHmac('sha3-256', this.key).update(this.computerNumber.toString()).digest('hex');
         return this.hmac;
