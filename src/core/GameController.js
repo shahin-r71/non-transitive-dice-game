@@ -37,7 +37,7 @@ export class GameController{
                 TableGenerator.generateProbabilityTable(probabilityMatrix);
                 continue;
             }
-            if (userInput === 'X') {
+            if (userInput === 'X' || userInput === 'x') {
                 console.error('Game cancelled by user');
                 process.exit(1);
             }
@@ -60,7 +60,7 @@ export class GameController{
                 TableGenerator.generateDiceSelectionMenu(this.diceList, availableIndices);
 
                 const userInput = readline.question("Your selection: ");
-                if (userInput === 'X') {
+                if (userInput === 'X' || userInput === 'x') {
                     console.error('Game cancelled by user');
                     process.exit(1);
                 }
@@ -85,7 +85,7 @@ export class GameController{
                 TableGenerator.generateDiceSelectionMenu(this.diceList, availableIndices);
                 
                 const userInput = readline.question("Your selection: ");
-                if (userInput === 'X') {
+                if (userInput === 'X' || userInput === 'x') {
                     console.error('Game cancelled by user');
                     process.exit(1);
                 }
@@ -112,29 +112,32 @@ export class GameController{
         this.randomGenerator.generateKey();
         this.randomGenerator.generateComputerNumber(5);
         this.randomGenerator.generateHmac();
-        const hmac = this.randomGenerator.getHmac();
-        
+        const hmac = this.randomGenerator.getHmac();  
         console.log(`It's time for ${isComputer ? 'my' : 'your'} throw.`);
-
-        console.log(`I selected a random value in the range 0..5 (HMAC=${hmac}).`);
-        console.log(`Add your number modulo ${6}.`);
-        TableGenerator.generateNumberSelectionMenu(5);
-
-        const userInput = readline.question("Your selection: ");
-        if (userInput === '?') {
-            const probabilityMatrix = ProbabilityCalculator.calculateProbabilityMatrix(this.diceList);
-            TableGenerator.generateProbabilityTable(probabilityMatrix);
-            return this.makeThrow(dice, isComputer);
-        }
-        if (userInput === 'X') {
-            console.error('Game cancelled by user');
-            process.exit(1);
-        }
-
-        const userNumber = parseInt(userInput);
-        if (isNaN(userNumber) || userNumber < 0 || userNumber >= 6) {
-            console.error(`Invalid input. Please remember to select a number between 0 and 5 next time.`);
-            return this.makeThrow(dice, isComputer);
+         
+        let userNumber;
+         while (true) {
+            console.log(`I selected a random value in the range 0..5 (HMAC=${hmac}).`);
+            console.log(`Add your number modulo ${6}.`);
+            TableGenerator.generateNumberSelectionMenu(5);
+    
+            const userInput = readline.question("Your selection: ");
+            if (userInput === '?') {
+                const probabilityMatrix = ProbabilityCalculator.calculateProbabilityMatrix(this.diceList);
+                TableGenerator.generateProbabilityTable(probabilityMatrix);
+                continue;
+            }
+            if (userInput === 'X' || userInput === 'x') {
+                console.error('Game cancelled by user');
+                process.exit(1);
+            }
+    
+            userNumber = parseInt(userInput);
+            if (isNaN(userNumber) || userNumber < 0 || userNumber >= 6) {
+                console.error(`Invalid input. Please remember to select a number between 0 and 5 next time.`);
+                continue;   
+            }
+            break;
         }
         const sum = this.randomGenerator.getComputerNumber() + userNumber;
         const resultIndex = sum % 6;
